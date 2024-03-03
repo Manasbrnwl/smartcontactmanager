@@ -1,0 +1,26 @@
+package com.smart.smartcontactmanager.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import com.smart.smartcontactmanager.dao.UserRepository;
+import com.smart.smartcontactmanager.entities.User;
+
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+    @Autowired
+    private UserRepository repository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User getuserByUserName = repository.getuserByUserName(username);
+        if (getuserByUserName == null) {
+            throw new UsernameNotFoundException("Could not found user !!");
+        }
+        CustomUserDetails customUserDetails = new CustomUserDetails(getuserByUserName);
+        return customUserDetails;
+    }
+
+}

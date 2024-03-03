@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.thymeleaf.org"
+  th:replace="~{base::layout(~{::section})}"
+>
+  <body>
+    <section class="banner vh-100">
+      <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-md-9 col-lg-6 col-xl-5">
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+              class="img-fluid"
+              alt="Sample image"
+            />
+          </div>
+          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+            <div class="container text-center">
+              <img style="width: 60px" th:src="@{/image/register.png}" />
+            </div>
+            <h1 class="text-center">Register Here</h1>
+            <div
+              th:if="${session.message}"
+              class="alert text-center"
+              th:classappend="${session.message.type}"
+              role="alert"
+            >
+              <p class="mb-0" th:text="${session.message.content}"></p>
+            </div>
+            <form
+              novalidate
+              th:action="@{/do_register}"
+              method="post"
+              th:object="${user}"
+            >
+              <!-- name field -->
+              <div class="form-group m-3">
+                <label for="name_field">Your name</label>
+                <input
+                  type="text"
+                  name="userName"
+                  class="form-control"
+                  id="name_field"
+                  th:classappend="${#fields.hasErrors('userName') ? 'is-invalid' : ''}"
+                  placeholder="Enter name"
+                  th:value="${user.userName}"
+                />
+                <div
+                  class="invalid-feedback"
+                  th:each="e : ${#fields.errors('userName')}"
+                  th:text="${e}"
+                ></div>
+              </div>
+
+              <!-- email field -->
+              <div class="form-group m-3">
+                <label for="email_field">Your name</label>
+                <input
+                  type="email"
+                  name="userEmail"
+                  class="form-control"
+                  th:classappend="${#fields.hasErrors('userEmail') ? 'is-invalid' : ''}"
+                  id="email_field"
+                  placeholder="Enter email"
+                  th:value="${user.userEmail}"
+                />
+                <div
+                  class="invalid-feedback"
+                  th:each="e : ${#fields.errors('userEmail')}"
+                  th:text="${e}"
+                ></div>
+              </div>
+
+              <!-- password field -->
+              <div class="form-group m-3">
+                <label for="password_field">Your name</label>
+                <input
+                  type="password"
+                  name="userPassword"
+                  class="form-control"
+                  th:classappend="${#fields.hasErrors('userPassword') ? 'is-invalid' : ''}"
+                  id="password_field"
+                  placeholder="Enter password"
+                />
+                <small class="form-text text-white fw-light"
+                  >Must match = 12345User@</small
+                >
+                <div
+                  class="invalid-feedback"
+                  th:each="e : ${#fields.errors('userPassword')}"
+                  th:text="${e}"
+                ></div>
+              </div>
+
+              <!-- description field -->
+              <div class="form-group m-3">
+                <textarea
+                  th:text="${user.about}"
+                  name="about"
+                  row="10"
+                  class="form-control"
+                  placeholder="Enter about you"
+                ></textarea>
+              </div>
+
+              <div class="form-group form-check m-3">
+                <input
+                  type="checkbox"
+                  name="agreement"
+                  class="form-check-input"
+                  id="agreement"
+                  th:classappend="${#fields.hasErrors('agreement') ? 'is-invalid' : ''}"
+                />
+                <label for="agreement">Accept terms and conditions</label>
+                <div
+                  class="invalid-feedback"
+                  th:each="e : ${#fields.errors('agreement')}"
+                  th:text="${e}"
+                ></div>
+              </div>
+
+              <div class="container text-center">
+                <button type="submit" class="btn bg-color text-white">
+                  Submit
+                </button>
+                <button type="reset" class="btn btn-warning">Reset</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

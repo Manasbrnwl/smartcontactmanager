@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.thymeleaf.org"
+  th:replace="~{normal/base::layoutUser(~{::section})}"
+>
+  <body>
+    <section class="banner">
+      <h1>Welcome you are a normal user</h1>
+      <h2>This is your private dashboard</h2>
+      <h1>User name : <span th:text="${user.userName}"></span></h1>
+      <h1>User email : <span th:text="${user.userEmail}"></span></h1>
+      <a th:href="@{/logout}" class="btn btn-danger">Log Out</a>
+    </section>
+  </body>
+</html>
