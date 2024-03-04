@@ -12,7 +12,8 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int cId;
-    private String cName;
+    private String cFirstName;
+    private String cSecondName;
     private String cNickName;
     @Column(unique = true)
     private String cEmail;
@@ -41,12 +42,20 @@ public class Contact {
         this.cId = cId;
     }
 
-    public String getcName() {
-        return cName;
+    public String getcFirstName() {
+        return cFirstName;
     }
 
-    public void setcName(String cName) {
-        this.cName = cName;
+    public void setcFirstName(String cFirstName) {
+        this.cFirstName = cFirstName;
+    }
+
+    public String getcSecondName() {
+        return cSecondName;
+    }
+
+    public void setcSecondName(String cSecondName) {
+        this.cSecondName = cSecondName;
     }
 
     public String getcNickName() {
@@ -100,10 +109,12 @@ public class Contact {
     public Contact() {
     }
 
-    public Contact(int cId, String cName, String cNickName, String cEmail, String cWork, String cPhone, String cInfo,
+    public Contact(int cId, String cFirstName, String cSecondName, String cNickName, String cEmail, String cWork,
+            String cPhone, String cInfo,
             String imageUrl, User user) {
         this.cId = cId;
-        this.cName = cName;
+        this.cFirstName = cFirstName;
+        this.cSecondName = cSecondName;
         this.cNickName = cNickName;
         this.cEmail = cEmail;
         this.cWork = cWork;
@@ -111,6 +122,13 @@ public class Contact {
         this.cInfo = cInfo;
         this.imageUrl = imageUrl;
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Contact [cId=" + cId + ", cFirstName=" + cFirstName + ", cSecondName=" + cSecondName + ", cNickName="
+                + cNickName + ", cEmail=" + cEmail + ", cWork=" + cWork + ", cPhone=" + cPhone + ", cInfo=" + cInfo
+                + ", imageUrl=" + imageUrl + ", user=" + user + "]";
     }
 
 }
