@@ -27,6 +27,9 @@
               role="alert"
             >
               <p class="mb-0" th:text="${session.message.content}"></p>
+              <th:block
+                th:text="${@sessionHelper.removeMessageFromSession()}"
+              ></th:block>
             </div>
             <form
               novalidate

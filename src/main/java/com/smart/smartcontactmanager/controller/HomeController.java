@@ -49,7 +49,6 @@ public class HomeController {
     @PostMapping("/do_register")
     public String user(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model,
             HttpSession session) {
-        session.removeAttribute("message");
         try {
             // if (!user.isAgreement()) {
             // throw new Exception("You have not agreed terms and condition !!!");

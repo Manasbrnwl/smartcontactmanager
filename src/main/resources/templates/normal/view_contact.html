@@ -11,9 +11,20 @@
   </head>
   <body>
     <section>
-      <div class="card bg-transparent">
+      <div class="card col-md-8 offset-md-2 bg-transparent">
         <div class="card-body">
           <h1 class="text-center text-white">Your Contacts</h1>
+          <div
+            th:if="${session.message}"
+            class="alert text-center"
+            th:classappend="${session.message.type}"
+            role="alert"
+          >
+            <span th:text="${session.message.content}"></span>
+            <th:block
+              th:text="${@sessionHelper.removeMessageFromSession}"
+            ></th:block>
+          </div>
           <hr class="text-white" />
           <table class="table">
             <thead>
@@ -22,34 +33,42 @@
                 <th scope="col">Image</th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
-                <th scope="col">Nick Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Phone No.</th>
-                <th scope="col">Info</th>
-                <th scope="col">Work</th>
               </tr>
             </thead>
             <tbody>
               <tr th:each="c : ${contacts}">
-                <th class="text-center">
+                <th class="">
                   <a href="#"><i class="fas fa-pen-alt"></i></a
-                  >&nbsp;&nbsp;&nbsp;<a href="#"
+                  >&nbsp;&nbsp;&nbsp;<a
+                    th:href="@{'/user/contact-delete/'+${currentPage}+'/'+${c.cId}}"
                     ><i class="fas fa-trash" style="color: red"></i
                   ></a>
                 </th>
-                <td th:text="${c.imageUrl}"></td>
-                <td id="t-row" th:text="${c.cFirstName}"></td>
-                <td id="t-row" th:text="${c.cSecondName}"></td>
-                <td id="t-row" th:text="${c.cNickName}"></td>
-                <td id="t-row" th:text="${c.cEmail}"></td>
-                <td id="t-row" th:text="${c.cPhone}"></td>
-                <td id="t-row" th:text="${c.cInfo}"></td>
-                <td id="t-row" th:text="${c.cWork}"></td>
+                <td>
+                  <img
+                    style="height: 35px; border-radius: 50%"
+                    th:src="@{'/image/'+${c.imageUrl}}"
+                    alt="profileImage"
+                  />
+                </td>
+                <td th:text="${c.cFirstName}"></td>
+                <td th:text="${c.cSecondName}"></td>
+                <td>
+                  <a style="color: white" th:href="@{'/user/contact/'+${c.cId}}"
+                    ><span th:text="${c.cEmail}"></span
+                  ></a>
+                </td>
+                <td th:text="${c.cPhone}"></td>
               </tr>
             </tbody>
           </table>
           <!-- pagination -->
-          <nav aria-label="Page navigation example" class="text-center">
+          <nav
+            aria-label="Page navigation example bg-transparent"
+            class="text-center"
+          >
             <ul class="pagination">
               <li class="page-item" th:if="${currentPage != 0}">
                 <a

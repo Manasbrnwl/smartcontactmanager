@@ -1,11 +1,13 @@
 package com.smart.smartcontactmanager.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -67,7 +69,6 @@ public class UserController {
     public String processAddContact(@ModelAttribute Contact contact,
             @RequestParam("profileImage") MultipartFile multipartFile,
             Model model, Principal principal, HttpSession session) {
-        session.removeAttribute("message");
         try {
             User user = this.userRepository.getuserByUserName(principal.getName());
             contact.setUser(user);
@@ -112,6 +113,45 @@ public class UserController {
         model.addAttribute("totalPages", contacts.getTotalPages());
 
         return "normal\\view_contact";
+    }
+
+    @GetMapping("/contact/{cId}")
+    public String contactDetail(@PathVariable("cId") Integer cId, Model model, Principal principal) {
+        try {
+            Optional<Contact> contactOptional = this.contactRepository.findById(cId);
+            Contact contact = contactOptional.get();
+            User user = this.userRepository.getuserByUserName(principal.getName());
+            model.addAttribute("title", "Not allowed");
+            if (user.getUserId() == contact.getUser().getUserId()) {
+                model.addAttribute("contact", contact);
+                model.addAttribute("title", contact.getcNickName());
+            }
+        } catch (Exception e) {
+        }
+        return "normal\\contact_detail";
+    }
+
+    @GetMapping("/contact-delete/{currentPage}/{cId}")
+    public String deleteContact(@PathVariable("cId") Integer cId, @PathVariable("currentPage") Integer page,
+            Principal principal, Model model,
+            HttpSession session) throws IOException {
+        try {
+            User user = this.userRepository.getuserByUserName(principal.getName());
+            // this.contactRepository.deleteById(cId);
+            Optional<Contact> contacOptional = this.contactRepository.findById(cId);
+            Contact contact = contacOptional.get();
+            if (user.getUserId() == contact.getUser().getUserId()) {
+                File file = new ClassPathResource("static/image").getFile();
+                Path path = (Path) Paths.get(file.getAbsolutePath() + File.separator + contact.getImageUrl());
+                Files.deleteIfExists(path);
+                this.contactRepository.delete(contact);
+                session.setAttribute("message", new Message("Contact Deleted Successfully!!", "alert-success"));
+                model.addAttribute("title", "View Contacts");
+            }
+        } catch (Exception e) {
+            session.setAttribute("message", new Message("Unauthorised Access!!", "alert-danger"));
+        }
+        return "redirect:/user/show-contacts/" + page;
     }
 
 }
