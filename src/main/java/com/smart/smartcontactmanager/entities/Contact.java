@@ -15,7 +15,6 @@ public class Contact {
     private String cFirstName;
     private String cSecondName;
     private String cNickName;
-    @Column(unique = true)
     private String cEmail;
     private String cWork;
     private String cPhone;

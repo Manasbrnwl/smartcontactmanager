@@ -11,6 +11,10 @@
   color: white;
 }
 
+.navName {
+  width: fit-content;
+}
+
 .my-card {
   padding: 20px;
   background: #ffffff;
@@ -96,4 +100,15 @@
 
 .sidebar a i {
   margin-right: 10px;
+}
+
+.table tr th,
+.table tr td {
+  background: transparent;
+  color: white;
+}
+
+tbody tr:hover {
+  background: #7469b6;
+  color: black;
 }

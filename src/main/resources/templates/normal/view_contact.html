@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.thymeleaf.com"
+  th:replace="~{normal/base::layoutUser(~{::section})}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <section>
+      <div class="card bg-transparent">
+        <div class="card-body">
+          <h1 class="text-center text-white">Your Contacts</h1>
+          <hr class="text-white" />
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Actions</th>
+                <th scope="col">Image</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Nick Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone No.</th>
+                <th scope="col">Info</th>
+                <th scope="col">Work</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="c : ${contacts}">
+                <th class="text-center">
+                  <a href="#"><i class="fas fa-pen-alt"></i></a
+                  >&nbsp;&nbsp;&nbsp;<a href="#"
+                    ><i class="fas fa-trash" style="color: red"></i
+                  ></a>
+                </th>
+                <td th:text="${c.imageUrl}"></td>
+                <td id="t-row" th:text="${c.cFirstName}"></td>
+                <td id="t-row" th:text="${c.cSecondName}"></td>
+                <td id="t-row" th:text="${c.cNickName}"></td>
+                <td id="t-row" th:text="${c.cEmail}"></td>
+                <td id="t-row" th:text="${c.cPhone}"></td>
+                <td id="t-row" th:text="${c.cInfo}"></td>
+                <td id="t-row" th:text="${c.cWork}"></td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- pagination -->
+          <nav aria-label="Page navigation example" class="text-center">
+            <ul class="pagination">
+              <li class="page-item" th:if="${currentPage != 0}">
+                <a
+                  class="page-link"
+                  th:href="@{'/user/show-contacts/'+${currentPage-1}}"
+                  >Previous</a
+                >
+              </li>
+
+              <li
+                th:each="i: ${#numbers.sequence(1,totalPages)}"
+                class="page-item"
+                th:classappend="${currentPage==i-1 ? 'active' : '' }"
+              >
+                <a class="page-link" th:href="@{'/user/show-contacts/'+${i-1}}"
+                  ><span th:text="${i}"></span
+                ></a>
+              </li>
+
+              <li class="page-item" th:if="${currentPage+1 != totalPages}">
+                <a
+                  class="page-link"
+                  th:href="@{'/user/show-contacts/'+${currentPage+1}}"
+                  >Next</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
