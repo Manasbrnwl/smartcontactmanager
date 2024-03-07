@@ -8,24 +8,13 @@
     <section>
       <div class="card bg-transparent m-3">
         <div class="card-body">
-          <h1 class="text-center text-white">Add Contact</h1>
+          <h1 class="text-center text-white">Update Contact</h1>
 
           <div class="container-fluid mt-1">
             <div class="row">
               <div class="col-md-6 offset-md-3">
-                <div
-                  th:if="${session.message}"
-                  class="alert text-center"
-                  th:classappend="${'alert-'+session.message.type}"
-                  role="alert"
-                >
-                  <span th:text="${session.message.content}"></span>
-                  <th:block
-                    th:text="${@sessionHelper.removeMessageFromSession()}"
-                  ></th:block>
-                </div>
                 <form
-                  th:action="@{/user/proccess-contact}"
+                  th:action="@{'/user/process-update/'+${currentPage}+'/'+${contact.cId}}"
                   method="post"
                   th:object="${contact}"
                   enctype="multipart/form-data"
@@ -41,14 +30,14 @@
                       class="form-control me-3"
                       name="cFirstName"
                       id="firstname"
-                      placeholder="Enter first name"
+                      th:value="${contact.cFirstName}"
                     />
                     <input
                       type="text"
                       class="form-control"
                       name="cSecondName"
                       id="secondname"
-                      placeholder="Enter second name"
+                      th:value="${contact.cSecondName}"
                     />
                   </div>
 
@@ -62,7 +51,7 @@
                       class="form-control"
                       name="cNickName"
                       id="nickname"
-                      placeholder="Enter nick name"
+                      th:value="${contact.cNickName}"
                     />
                   </div>
 
@@ -76,7 +65,7 @@
                       class="form-control"
                       name="cEmail"
                       id="email"
-                      placeholder="Enter email"
+                      th:value="${contact.cEmail}"
                     />
                   </div>
 
@@ -89,7 +78,7 @@
                       type="number"
                       name="cPhone"
                       id="phone"
-                      placeholder="Enter phone number"
+                      th:value="${contact.cPhone}"
                       class="form-control"
                     />
                   </div>
@@ -103,7 +92,7 @@
                       type="text"
                       name="cWork"
                       id="work"
-                      placeholder="Enter work"
+                      th:value="${contact.cWork}"
                       class="form-control me-3"
                     />
                     <!-- image -->
@@ -122,14 +111,19 @@
                       id="info"
                       rows="5"
                       class="form-control"
-                      placeholder="Enter description"
+                      th:text="${contact.cInfo}"
                     ></textarea>
                   </div>
                   <div class="container d-flex justify-content-around">
-                    <button type="submit" class="btn bg-color text-white">
-                      Save Contact
+                    <button
+                      th:href="@{'/user/show-contacts/'+${currentPage}}"
+                      class="btn bg-color text-white"
+                    >
+                      Back
                     </button>
-                    <button type="reset" class="btn btn-warning">Reset</button>
+                    <button type="submit" class="btn btn-warning">
+                      Update
+                    </button>
                   </div>
                 </form>
               </div>

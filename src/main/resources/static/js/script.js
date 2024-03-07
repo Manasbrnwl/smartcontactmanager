@@ -9,3 +9,26 @@ const toggleSidebar = () => {
     $(".content").css("width", "85%");
   }
 };
+
+function deleteContact(currentPage, cId) {
+  swal(
+    {
+      title: "Are you sure?",
+      text: "You will not be able to recover this file!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      closeOnConfirm: false,
+      closeOnCancel: false,
+    },
+    function (isConfirm) {
+      if (isConfirm) {
+        window.location = "/user/contact-delete/" + currentPage + "/" + cId;
+      } else {
+        swal("Cancelled", "Your file is safe :)", "error");
+      }
+    }
+  );
+}

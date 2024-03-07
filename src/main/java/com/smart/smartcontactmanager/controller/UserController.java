@@ -106,7 +106,7 @@ public class UserController {
         int userId = getuserByUserName.getUserId();
         // List<Contact> contacts = getuserByUserName.getContacts();
 
-        Pageable pageable = PageRequest.of(page, 3);
+        Pageable pageable = PageRequest.of(page, 5);
         Page<Contact> contacts = this.contactRepository.findContactsByUser(userId, pageable);
         model.addAttribute("contacts", contacts);
         model.addAttribute("currentPage", page);
@@ -115,8 +115,9 @@ public class UserController {
         return "normal\\view_contact";
     }
 
-    @GetMapping("/contact/{cId}")
-    public String contactDetail(@PathVariable("cId") Integer cId, Model model, Principal principal) {
+    @GetMapping("/contact/{currentPage}/{cId}")
+    public String contactDetail(@PathVariable("cId") Integer cId, @PathVariable("currentPage") Integer page,
+            Model model, Principal principal) {
         try {
             Optional<Contact> contactOptional = this.contactRepository.findById(cId);
             Contact contact = contactOptional.get();
@@ -124,6 +125,7 @@ public class UserController {
             model.addAttribute("title", "Not allowed");
             if (user.getUserId() == contact.getUser().getUserId()) {
                 model.addAttribute("contact", contact);
+                model.addAttribute("currentPage", page);
                 model.addAttribute("title", contact.getcNickName());
             }
         } catch (Exception e) {
@@ -150,6 +152,52 @@ public class UserController {
             }
         } catch (Exception e) {
             session.setAttribute("message", new Message("Unauthorised Access!!", "alert-danger"));
+        }
+        return "redirect:/user/show-contacts/" + page;
+    }
+
+    @PostMapping("/contact-update/{currentPage}/{cId}")
+    public String updateContact(@PathVariable("cId") Integer cId, @PathVariable("currentPage") Integer page,
+            Principal principal, Model model,
+            HttpSession session) {
+        try {
+            User user = this.userRepository.getuserByUserName(principal.getName());
+            Optional<Contact> contacOptional = this.contactRepository.findById(cId);
+            Contact contact = contacOptional.get();
+            if (user.getUserId() == contact.getUser().getUserId()) {
+                model.addAttribute("contact", contact);
+                model.addAttribute("title", "Update Contact");
+                model.addAttribute("currentPage", page);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return "normal\\update_contact";
+    }
+
+    @PostMapping("/process-update/{page}/{cId}")
+    public String updateHandler(@ModelAttribute Contact contact, @PathVariable("page") Integer page,
+            @PathVariable("cId") Integer cId, @RequestParam("profileImage") MultipartFile multipartFile, Model model,
+            HttpSession session) {
+        Contact oldContact = this.contactRepository.findById(cId).get();
+        // this.contactRepository.save(contact);
+        try {
+            if (!multipartFile.isEmpty()) {
+                File file = new ClassPathResource("static/image").getFile();
+                Path path = (Path) Paths.get(file.getAbsolutePath() + File.separator + oldContact.getImageUrl());
+                Files.deleteIfExists(path);
+                Path newPath = (Path) Paths
+                        .get(file.getAbsolutePath() + File.separator + multipartFile.getOriginalFilename());
+                Files.copy(multipartFile.getInputStream(), newPath, StandardCopyOption.REPLACE_EXISTING);
+                contact.setImageUrl(multipartFile.getOriginalFilename());
+            } else {
+                contact.setImageUrl(oldContact.getImageUrl());
+            }
+            contact.setUser(oldContact.getUser());
+            contact.setcId(cId);
+            this.contactRepository.save(contact);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return "redirect:/user/show-contacts/" + page;
     }

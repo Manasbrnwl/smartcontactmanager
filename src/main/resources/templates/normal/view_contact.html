@@ -40,11 +40,21 @@
             <tbody>
               <tr th:each="c : ${contacts}">
                 <th class="">
-                  <a href="#"><i class="fas fa-pen-alt"></i></a
-                  >&nbsp;&nbsp;&nbsp;<a
-                    th:href="@{'/user/contact-delete/'+${currentPage}+'/'+${c.cId}}"
-                    ><i class="fas fa-trash" style="color: red"></i
-                  ></a>
+                  <form
+                    th:action="@{'/user/contact-update/'+${currentPage}+'/'+${c.cId}}"
+                    method="post"
+                    class="d-inline"
+                  >
+                    <button class="bg-transparent border-0" type="submit">
+                      <i class="fas fa-pen-alt text-white"></i>
+                    </button>
+                  </form>
+                  &nbsp;&nbsp;&nbsp;<button
+                    class="bg-transparent border-0"
+                    th:onclick="|deleteContact(${currentPage},${c.cId})|"
+                  >
+                    <i class="fas fa-trash" style="color: red"></i>
+                  </button>
                 </th>
                 <td>
                   <img
@@ -56,7 +66,9 @@
                 <td th:text="${c.cFirstName}"></td>
                 <td th:text="${c.cSecondName}"></td>
                 <td>
-                  <a style="color: white" th:href="@{'/user/contact/'+${c.cId}}"
+                  <a
+                    style="color: white"
+                    th:href="@{'/user/contact/'+${currentPage}+'/'+${c.cId}}"
                     ><span th:text="${c.cEmail}"></span
                   ></a>
                 </td>
@@ -65,11 +77,8 @@
             </tbody>
           </table>
           <!-- pagination -->
-          <nav
-            aria-label="Page navigation example bg-transparent"
-            class="text-center"
-          >
-            <ul class="pagination">
+          <nav aria-label="Page navigation example bg-transparent">
+            <ul class="pagination d-flex justify-content-center">
               <li class="page-item" th:if="${currentPage != 0}">
                 <a
                   class="page-link"

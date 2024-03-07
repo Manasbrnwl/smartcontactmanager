@@ -39,11 +39,26 @@
               </tr>
             </tbody>
           </table>
-          <div class="container">
-            <button type="submit" class="btn bg-color text-white">
-              Submit
+          <div class="container d-flex justify-content-around">
+            <a
+              th:href="@{'/user/show-contacts/'+${currentPage}}"
+              class="btn bg-color text-white"
+            >
+              Back
+            </a>
+            <form
+              th:action="@{'/user/contact-update/'+${currentPage}+'/'+${contact.cId}}"
+              method="post"
+            >
+              <button type="submit" class="btn bg-warning">Update</button>
+            </form>
+            <button
+              type="reset"
+              th:onclick="|deleteContact(${currentPage},${contact.cId})|"
+              class="btn btn-danger"
+            >
+              Delete
             </button>
-            <button type="reset" class="btn btn-warning">Reset</button>
           </div>
         </div>
       </div>
