@@ -14,6 +14,18 @@
       <div class="card col-md-8 offset-md-2 bg-transparent">
         <div class="card-body">
           <h1 class="text-center text-white">Your Contacts</h1>
+          <div class="search-container my-3" role="search">
+            <input
+              onkeyup="search()"
+              id="search-input"
+              class="form-control me-2"
+              type="search"
+              placeholder="Search your contact"
+            />
+            <div class="search-result">
+              <!-- result -->
+            </div>
+          </div>
           <div
             th:if="${session.message}"
             class="alert text-center"

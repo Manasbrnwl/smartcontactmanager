@@ -112,3 +112,19 @@ tbody tr:hover {
   background: #7469b6;
   color: black;
 }
+
+/* search-css */
+
+.search-container {
+  position: relative;
+}
+.search-result {
+  position: absolute;
+  background: white;
+  width: 100%;
+  padding: 10px;
+  border-bottom-left-radius: 5%;
+  border-bottom-right-radius: 5%;
+  border: 1px solid black;
+  display: none;
+}

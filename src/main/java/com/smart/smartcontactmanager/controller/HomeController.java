@@ -60,7 +60,7 @@ public class HomeController {
 
             user.setUserRole("ROLE_USER");
             user.setEnabled(true);
-            user.setImageUrl("default.jpg");
+            user.setImageUrl("default/defualt.jpg");
             user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
             System.out.println("Agreement = " + user.isAgreement());
             User result = this.userRepository.save(user);

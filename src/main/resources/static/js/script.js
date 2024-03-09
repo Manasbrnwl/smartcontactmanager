@@ -32,3 +32,30 @@ function deleteContact(currentPage, cId) {
     }
   );
 }
+
+const search = () => {
+  // console.log("searching...");
+  let query = $("#search-input").val();
+  if (query == "") {
+    $(".search-result").hide();
+  } else {
+    // console.log(query);
+    let url = `http://localhost:8080/user/search/${query}`;
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        let text = `<div class='list-group'>`;
+        data.forEach((contact) => {
+          text += `<a href='/user/contact/${contact.cId}' class='list-group-item list-group-action'>${contact.cNickName}</a>`;
+        });
+        text += `</div>`;
+        $(".search-result").html(text);
+        $(".search-result").show();
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation: ", error);
+      });
+  }
+};

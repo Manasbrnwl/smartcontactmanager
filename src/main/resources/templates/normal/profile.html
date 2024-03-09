@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.thymeleaf.org"
+  th:replace="~{normal/base::layoutUser(~{::section})}"
+>
+  <body>
+    <section>
+      <div class="container">
+        <div class="card bg-transparent col-md-6 offset-md-3">
+          <div class="card-body text-center">
+            <img
+              style="height: 200px; border-radius: 50%"
+              th:src="@{'/image/'+${user.imageUrl}}"
+              alt="profileImage"
+            />
+            <h3 class="mt-3 text-white" th:text="${user.userName}"></h3>
+            <table class="table mt-3">
+              <tbody>
+                <tr>
+                  <td>User Id</td>
+                  <td th:text="${user.userId}"></td>
+                </tr>
+                <tr>
+                  <td>User Email</td>
+                  <td th:text="${user.userEmail}"></td>
+                </tr>
+                <tr>
+                  <td>User Role</td>
+                  <td th:text="${user.userRole}"></td>
+                </tr>
+                <tr>
+                  <td>User Active</td>
+                  <td th:text="${user.enabled}"></td>
+                </tr>
+                <tr>
+                  <td>User About</td>
+                  <td th:text="${user.about}"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

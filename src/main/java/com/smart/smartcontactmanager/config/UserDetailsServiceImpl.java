@@ -11,11 +11,11 @@ import com.smart.smartcontactmanager.entities.User;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User getuserByUserName = repository.getuserByUserName(username);
+        User getuserByUserName = userRepository.getuserByUserName(username);
         if (getuserByUserName == null) {
             throw new UsernameNotFoundException("Could not found user !!");
         }

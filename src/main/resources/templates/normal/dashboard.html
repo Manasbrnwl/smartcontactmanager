@@ -5,6 +5,27 @@
   th:replace="~{normal/base::layoutUser(~{::section})}"
 >
   <body>
-    <section></section>
+    <section>
+      <div class="container">
+        <div class="card m-5 p-5 bg-transparent">
+          <div class="card-body text-center">
+            <img
+              style="height: 200px; border-radius: 50%"
+              th:src="@{'/image/contact.jpg'}"
+              alt="profileImage"
+            />
+            <h1 class="mt-3 fst-italic fw-light text-white">
+              Start adding your contact on cloud...
+            </h1>
+            <a
+              th:href="@{/user/add-contact}"
+              class="btn btn-primary btn-block text-uppercase mt-4"
+            >
+              Add new contact
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   </body>
 </html>

@@ -1,5 +1,7 @@
 package com.smart.smartcontactmanager.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +25,7 @@ public class Contact {
     private String imageUrl;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
     public User getUser() {

@@ -75,7 +75,7 @@ public class UserController {
 
             // processing and uploading image or file
             if (multipartFile.isEmpty()) {
-                contact.setImageUrl("NULL");
+                contact.setImageUrl("default/defualt.jpg");
             } else {
                 contact.setImageUrl(multipartFile.getOriginalFilename());
 
@@ -133,6 +133,25 @@ public class UserController {
         return "normal\\contact_detail";
     }
 
+    // details from search
+    @GetMapping("/contact/{cId}")
+    public String contactDetailSearch(@PathVariable("cId") Integer cId,
+            Model model, Principal principal) {
+        try {
+            Optional<Contact> contactOptional = this.contactRepository.findById(cId);
+            Contact contact = contactOptional.get();
+            User user = this.userRepository.getuserByUserName(principal.getName());
+            model.addAttribute("title", "Not allowed");
+            if (user.getUserId() == contact.getUser().getUserId()) {
+                model.addAttribute("contact", contact);
+                model.addAttribute("currentPage", 0);
+                model.addAttribute("title", contact.getcNickName());
+            }
+        } catch (Exception e) {
+        }
+        return "normal\\contact_detail";
+    }
+
     @GetMapping("/contact-delete/{currentPage}/{cId}")
     public String deleteContact(@PathVariable("cId") Integer cId, @PathVariable("currentPage") Integer page,
             Principal principal, Model model,
@@ -143,9 +162,11 @@ public class UserController {
             Optional<Contact> contacOptional = this.contactRepository.findById(cId);
             Contact contact = contacOptional.get();
             if (user.getUserId() == contact.getUser().getUserId()) {
-                File file = new ClassPathResource("static/image").getFile();
-                Path path = (Path) Paths.get(file.getAbsolutePath() + File.separator + contact.getImageUrl());
-                Files.deleteIfExists(path);
+                if (contact.getImageUrl() != "default/defualt.jpg") {
+                    File file = new ClassPathResource("static/image").getFile();
+                    Path path = (Path) Paths.get(file.getAbsolutePath() + File.separator + contact.getImageUrl());
+                    Files.deleteIfExists(path);
+                }
                 this.contactRepository.delete(contact);
                 session.setAttribute("message", new Message("Contact Deleted Successfully!!", "alert-success"));
                 model.addAttribute("title", "View Contacts");
@@ -170,7 +191,7 @@ public class UserController {
                 model.addAttribute("currentPage", page);
             }
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();//
         }
         return "normal\\update_contact";
     }
@@ -182,7 +203,7 @@ public class UserController {
         Contact oldContact = this.contactRepository.findById(cId).get();
         // this.contactRepository.save(contact);
         try {
-            if (!multipartFile.isEmpty()) {
+            if (!multipartFile.isEmpty() && oldContact.getImageUrl() != "default/defualt.jpg") {
                 File file = new ClassPathResource("static/image").getFile();
                 Path path = (Path) Paths.get(file.getAbsolutePath() + File.separator + oldContact.getImageUrl());
                 Files.deleteIfExists(path);
@@ -202,4 +223,12 @@ public class UserController {
         return "redirect:/user/show-contacts/" + page;
     }
 
+    // profile
+    @GetMapping("/profile")
+    public String profile(Model model, Principal principal) {
+        model.addAttribute("title", "Your Profile");
+        User user = this.userRepository.getuserByUserName(principal.getName());
+        model.addAttribute("user", user);
+        return "normal\\profile";
+    }
 }
