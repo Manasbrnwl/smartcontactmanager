@@ -38,56 +38,58 @@
             ></th:block>
           </div>
           <hr class="text-white" />
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Actions</th>
-                <th scope="col">Image</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone No.</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="c : ${contacts}">
-                <th class="">
-                  <form
-                    th:action="@{'/user/contact-update/'+${currentPage}+'/'+${c.cId}}"
-                    method="post"
-                    class="d-inline"
-                  >
-                    <button class="bg-transparent border-0" type="submit">
-                      <i class="fas fa-pen-alt text-white"></i>
+          <div class="table-responsive-md">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Actions</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Phone No.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="c : ${contacts}">
+                  <th class="">
+                    <form
+                      th:action="@{'/user/contact-update/'+${currentPage}+'/'+${c.cId}}"
+                      method="post"
+                      class="d-inline"
+                    >
+                      <button class="bg-transparent border-0" type="submit">
+                        <i class="fas fa-pen-alt text-white"></i>
+                      </button>
+                    </form>
+                    &nbsp;&nbsp;&nbsp;<button
+                      class="bg-transparent border-0"
+                      th:onclick="|deleteContact(${currentPage},${c.cId})|"
+                    >
+                      <i class="fas fa-trash" style="color: red"></i>
                     </button>
-                  </form>
-                  &nbsp;&nbsp;&nbsp;<button
-                    class="bg-transparent border-0"
-                    th:onclick="|deleteContact(${currentPage},${c.cId})|"
-                  >
-                    <i class="fas fa-trash" style="color: red"></i>
-                  </button>
-                </th>
-                <td>
-                  <img
-                    style="height: 35px; border-radius: 50%"
-                    th:src="@{'/image/'+${c.imageUrl}}"
-                    alt="profileImage"
-                  />
-                </td>
-                <td th:text="${c.cFirstName}"></td>
-                <td th:text="${c.cSecondName}"></td>
-                <td>
-                  <a
-                    style="color: white"
-                    th:href="@{'/user/contact/'+${currentPage}+'/'+${c.cId}}"
-                    ><span th:text="${c.cEmail}"></span
-                  ></a>
-                </td>
-                <td th:text="${c.cPhone}"></td>
-              </tr>
-            </tbody>
-          </table>
+                  </th>
+                  <td>
+                    <img
+                      style="height: 35px; border-radius: 50%"
+                      th:src="@{'/image/'+${c.imageUrl}}"
+                      alt="profileImage"
+                    />
+                  </td>
+                  <td th:text="${c.cFirstName}"></td>
+                  <td th:text="${c.cSecondName}"></td>
+                  <td>
+                    <a
+                      style="color: white"
+                      th:href="@{'/user/contact/'+${currentPage}+'/'+${c.cId}}"
+                      ><span th:text="${c.cEmail}"></span
+                    ></a>
+                  </td>
+                  <td th:text="${c.cPhone}"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <!-- pagination -->
           <nav aria-label="Page navigation example bg-transparent">
             <ul class="pagination d-flex justify-content-center">
@@ -120,6 +122,12 @@
           </nav>
         </div>
       </div>
+      <script>
+        $(document).ready(() => {
+          $(".item").removeClass("active");
+          $("#view-link").addClass("active");
+        });
+      </script>
     </section>
   </body>
 </html>

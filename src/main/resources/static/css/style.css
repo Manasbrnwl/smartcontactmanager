@@ -43,14 +43,15 @@
 @media only screen and (max-width: 600px) {
   .sidebar {
     display: none;
-    width: 80% !important;
+    width: 100% !important;
     background: #ffffff;
     height: 100vh;
-    position: fixed;
+    position: relative !important;
     padding-top: 20px;
   }
   .content {
-    margin-left: 0% !important;
+    margin: 0% !important;
+    width: 100% !important;
   }
 }
 
@@ -127,4 +128,9 @@ tbody tr:hover {
   border-bottom-right-radius: 5%;
   border: 1px solid black;
   display: none;
+}
+
+.active {
+  background: #7469b6 !important;
+  color: white !important;
 }

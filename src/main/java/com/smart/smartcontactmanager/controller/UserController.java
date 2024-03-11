@@ -14,6 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,9 @@ public class UserController {
 
     @Autowired
     private ContactRepository contactRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     // common data
     @ModelAttribute
@@ -230,5 +234,38 @@ public class UserController {
         User user = this.userRepository.getuserByUserName(principal.getName());
         model.addAttribute("user", user);
         return "normal\\profile";
+    }
+
+    // setting handler
+
+    @GetMapping("/settings")
+    public String openSetting() {
+        return "normal\\settings";
+    }
+
+    // change password
+    @PostMapping("/change-password")
+    public String changePassword(@RequestParam("oldPassword") String oldPassword,
+            @RequestParam("newPassword") String newPassword,
+            @RequestParam("confirmNewPassword") String confirmNewPassword, Principal principal,
+            HttpSession session) {
+        User user = this.userRepository.getuserByUserName(principal.getName());
+        if (this.passwordEncoder.matches(oldPassword, user.getUserPassword())) {
+            if (newPassword.equals(confirmNewPassword) && !newPassword.isEmpty()) {
+                user.setUserPassword(this.passwordEncoder.encode(newPassword));
+                this.userRepository.save(user);
+                session.setAttribute("message",
+                        new Message("Password Successfully changed!!", "alert-success"));
+            } else {
+                session.setAttribute("message",
+                        new Message("Confirm password does not match!!", "alert-danger"));
+                return "normal\\settings";
+            }
+        } else {
+            session.setAttribute("message",
+                    new Message("Password not matched with original password!!", "alert-danger"));
+            return "normal\\settings";
+        }
+        return "redirect:/user/dashboard";
     }
 }
