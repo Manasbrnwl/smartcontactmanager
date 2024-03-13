@@ -35,7 +35,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-@RequestMapping("/user/")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -251,7 +251,7 @@ public class UserController {
             HttpSession session) {
         User user = this.userRepository.getuserByUserName(principal.getName());
         if (this.passwordEncoder.matches(oldPassword, user.getUserPassword())) {
-            if (newPassword.equals(confirmNewPassword) && !newPassword.isEmpty()) {
+            if (newPassword.equals(confirmNewPassword) && !newPassword.isEmpty() && !confirmNewPassword.isEmpty()) {
                 user.setUserPassword(this.passwordEncoder.encode(newPassword));
                 this.userRepository.save(user);
                 session.setAttribute("message",

@@ -8,7 +8,7 @@
     <section class="banner vh-100">
       <div class="container-fluid h-custom">
         <div class="row d-flex justify-content-center align-items-center h-100">
-          <div class="col-md-9 col-lg-6 col-xl-5">
+          <div class="col-md-9 col-lg-6 col-xl-5" id="image-part">
             <img
               th:src="@{/image/login.png}"
               class="img-fluid"
@@ -31,6 +31,17 @@
               class="alert alert-success text-center mt-1"
             >
               You have been logged out
+            </div>
+            <div
+              th:if="${session.message}"
+              class="alert text-center"
+              th:classappend="${session.message.type}"
+              role="alert"
+            >
+              <p class="mb-0" th:text="${session.message.content}"></p>
+              <th:block
+                th:text="${@sessionHelper.removeMessageFromSession()}"
+              ></th:block>
             </div>
             <form th:action="@{/do_login}" method="post">
               <!-- Email input -->
@@ -73,7 +84,9 @@
                     Remember me
                   </label>
                 </div>
-                <a href="#!" class="text-body">Forgot password?</a>
+                <a th:href="@{/forget-password}" class="text-body text-white-50"
+                  >Forgot password?</a
+                >
               </div>
               <div class="container text-center mt-4 pt-4">
                 <button type="submit" class="btn bg-color text-white">

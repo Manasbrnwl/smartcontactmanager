@@ -9,4 +9,6 @@ import com.smart.smartcontactmanager.entities.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("Select u from User u where u.userEmail=:email")
     public User getuserByUserName(@Param("email") String email);
+
+    public boolean existsByUserEmail(String userEmail);
 }
